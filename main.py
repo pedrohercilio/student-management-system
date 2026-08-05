@@ -1,3 +1,5 @@
+# CORRIGI TUDO -- MANDAR PARA REVISÃO (BUGS E LÓGICA)
+
 from rich import print
 
 def verificacao_nota(nota):
@@ -497,7 +499,7 @@ def opcao_rankingTurma(alunos):
 
 def opcao_top3(alunos):
     print("\nTop 3 alunos:")
-    for ordem, (aluno, notas) in enumerate(ranking_alunos(alunos), start=1):
+    for ordem, (aluno, notas) in enumerate(ranking_alunos(alunos[:3]), start=1):
         media = calcular_media(notas)
         if ordem <= 3:
             print(f"{ordem}º - {aluno}, Média: {media:.2f}")
@@ -607,30 +609,40 @@ def opcao_editarAluno(alunos):
 def editar_nome(alunos, nome_selecionado):
     while True:
         novo_nome = input(f"\nQual o nome que você quer colocar no lugar de {nome_selecionado}? ").strip().title()
-        if novo_nome not in alunos:
+        if novo_nome not in alunos and novo_nome is not "":
            alunos[novo_nome] = alunos.pop(nome_selecionado)
            break
+
+        if novo_nome == nome_selecionado:
+            print("\nO novo nome é o mesmo do nome a ser excluído. Escolha outro nome.")
+            pause()
         else:
-            print("\nO nome escolhido já está entre os atuais alunos, por favor, digite outro nome.")
+            print("\nO nome escolhido já está entre os atuais alunos ou está vazio, por favor, digite outro nome.")
             pause()
     print("Nome alterado com êxito!")
 
 def editar_quantidadeNotas(quantidade_notas, notas, nome_selecionado):
+    while True:
+        nova_quantidade = ler_int(f"\nQual a nova quantidade de notas que {nome_selecionado} terá? ")
 
-    nova_quantidade = ler_int(f"\nQual a nova quantidade de notas que {nome_selecionado} terá? ")
+        if nova_quantidade <= 0:
+            print("\nPor favor, digite uma quantidade válida (maior que zero).")
+            pause()
+            continue
+        
+
+        if nova_quantidade > quantidade_notas:
+            novaquantidade_maior(nova_quantidade, quantidade_notas, notas)
+            return
 
 
-    if nova_quantidade > quantidade_notas:
-        novaquantidade_maior(nova_quantidade, quantidade_notas, notas)
+        elif nova_quantidade == quantidade_notas:
+            print("\nA nova quantidade de notas é a mesma da já existente, tente novamente.")
+            pause()
+            return
+
+        novaquantidade_menor(quantidade_notas, nova_quantidade, notas)
         return
-
-
-    elif nova_quantidade == quantidade_notas:
-        print("\nA nova quantidade de notas é a mesma da já existente, tente novamente.")
-        pause()
-        return
-
-    novaquantidade_menor(quantidade_notas, nova_quantidade, notas)
 
 
 def novaquantidade_maior(nova_quantidade, quantidade_notas, notas):
@@ -666,6 +678,11 @@ def diferenca_igual(quantidade_notas, notas):
 
         numero_selecionado = escolher_nota(nota_selecionada, quantidade_notas)
 
+        if not numero_selecionado:
+            print("\nSelecione alguma nota.")
+            pause()
+            continue
+        
         if numero_selecionado is not None and 1 <= numero_selecionado <= len(notas):
             notas.remove(notas[numero_selecionado - 1])
             print("\nNota removida com êxito!")
@@ -679,11 +696,22 @@ def diferenca_maior(notas, diferenca, quantidade_notas):
 
     while True:
 
-        print("\nNotas atuais:")
-        for i, nota in enumerate(notas):
-            print(f"{i + 1} - {nota}")
-        pause()
+        notas_para_remover = ler_notas_remover(notas, diferenca)
 
+        itens_para_corrigir, indices_validos = validar_notas(notas, notas_para_remover)
+        
+        corrigir_notas(itens_para_corrigir, notas, quantidade_notas, indices_validos)
+
+        if remover_notas(diferenca, indices_validos, notas):
+            break        
+
+def ler_notas_remover(notas, diferenca):
+    print("\nNotas atuais:")
+    for i, nota in enumerate(notas):
+        print(f"{i + 1} - {nota}")
+    print("\n______________________________")
+
+    while True:
         notas_para_remover = []
         print(f"\nDigite as {diferenca} notas a remover:\n")
         while len(notas_para_remover) < diferenca:
@@ -691,91 +719,98 @@ def diferenca_maior(notas, diferenca, quantidade_notas):
             notas_separadas = nota_recebida.split()
             for nota in notas_separadas:
                 notas_para_remover.append(nota)
-        print(notas_para_remover)
+        if len(notas_para_remover) == diferenca:
+            return notas_para_remover
+        else:
+            print("\nVocê digitou mais notas do que o necessário, por favor, digite-as novamente.")
+            pause()
+
+def validar_notas(notas, notas_para_remover):
+    # Listas para separar as entradas válidas das não válidas (joio do trigo)
+    indices_validos = []
+    itens_para_corrigir = [] # Armazena tuplas: (índice_na_entrada, valor_digitado)
+    
+    # 2 - validação inicial
+    for i, valor in enumerate(notas_para_remover):
+        valor_limpo = valor.strip().title()
+        numero_selecionado = escolher_nota(valor_limpo, len(notas_para_remover))
+
         
-        # Listas para separar as entradas válidas das não válidas (joio do trigo)
-        indices_validos = []
-        itens_para_corrigir = [] # Armazena tuplas: (índice_na_entrada, valor_digitado)
+        valido = True
         
-        # 2 - validação inicial
-        for i, p in enumerate(notas_para_remover):
-            parte_limpo = p.strip().title()
-            numero_selecionado = escolher_nota(parte_limpo, len(notas_para_remover))
+        if numero_selecionado is None:
+            valido = False
+            motivo = "Valor inválido."
 
-            
-            valido = True
-            
-            if numero_selecionado is None:
-                valido = False
-                motivo = "Valor inválido."
+        elif not (1 <= numero_selecionado <= len(notas)):
+            valido = False
+            motivo = f"Fora do intervalo (1 - {len(notas)})."
 
-            elif not (1 <= numero_selecionado <= len(notas)):
-                valido = False
-                motivo = f"Fora do intervalo (1 - {len(notas)})."
+        elif numero_selecionado in indices_validos:
+            valido = False
+            motivo = "Repetido (você já selecionou esta nota)."
 
-            elif numero_selecionado in indices_validos:
-                valido = False
-                motivo = "Repetido (você já selecionou esta nota)."
+        
+        if valido:
+            indices_validos.append(numero_selecionado)
+        else:
+            itens_para_corrigir.append({'Posicao': i, 'Valor': valor, 'Motivo': motivo})
 
-            
-            if valido:
-                indices_validos.append(numero_selecionado)
-            else:
-                itens_para_corrigir.append({'Posicao': i, 'Valor': p, 'Motivo': motivo})
-
-
-        if itens_para_corrigir:
-            print(f"\nSerá necessário corrigir {len(itens_para_corrigir)} erros/valores enviados:")
-            for valor, item in enumerate(itens_para_corrigir):
-                print(f"{valor + 1} - '{item['Valor']}': {item['Motivo']}")
-            
-            print("\n--- Correção dos itens inválidos ---")
-            
-            for item in itens_para_corrigir:
-                while True:
-                    novo_valor = input(f"\nSubstitua '{item['Valor']}' por causa de {item['Motivo']}: ").strip().title()
-                    novo_num = None
-                    
-                    try:
-                        novo_num = int(novo_valor)
-                    except ValueError:
-                        if novo_valor.startswith("Nota"):
-                            try: 
-                                novo_num = int(novo_valor.split()[1])
-                            except: 
-                                pass
-                        if novo_num is None:
-                            for i in range(len(notas)):
-                                if novo_valor == f"Nota {i + 1}":
-                                    novo_num = i + 1
-                                    break
-                    
+    return itens_para_corrigir, indices_validos
+        
+def corrigir_notas(itens_para_corrigir, notas, quantidade_notas, indices_validos):
+    if itens_para_corrigir:
+        print(f"\nSerá necessário corrigir {len(itens_para_corrigir)} erros/valores enviados:")
+        for valor, item in enumerate(itens_para_corrigir):
+            print(f"{valor + 1} - '{item['Valor']}': {item['Motivo']}")
+        
+        print("\n--- Correção dos itens inválidos ---")
+        
+        for item in itens_para_corrigir:
+            while True:
+                novo_valor = input(f"\nSubstitua '{item['Valor']}' por causa de {item['Motivo']}: ").strip().title()
+                novo_num = None
+                
+                try:
+                    novo_num = int(novo_valor)
+                except ValueError:
+                    if novo_valor.startswith("Nota"):
+                        try: 
+                            novo_num = int(novo_valor.split()[1])
+                        except: 
+                            pass
                     if novo_num is None:
-                        print("Valor não reconhecido, utilize número ou 'Nota X'.")
-                        pause()
-                        continue
+                        for i in range(len(notas)):
+                            if novo_valor == f"Nota {i + 1}":
+                                novo_num = i + 1
+                                break
+                
+                if novo_num is None:
+                    print("Valor não reconhecido, utilize número ou 'Nota X'.")
+                    pause()
+                    continue
 
-                    if not (1 <= novo_num <= quantidade_notas):
-                        print(f"Valor fora da quantidade estabelecida (1 - {quantidade_notas})")
-                        pause()
-                        continue
+                if not (1 <= novo_num <= quantidade_notas):
+                    print(f"Valor fora da quantidade estabelecida (1 - {quantidade_notas})")
+                    pause()
+                    continue
 
-                    if novo_num in indices_validos:
-                        print("Nota já selecionada, escolhida ou corrigida.")
-                        pause()
-                        continue
-                    
-                    indices_validos.append(novo_num)
-                    print("Novo valor aceito!")
-                    break
+                if novo_num in indices_validos:
+                    print("Nota já selecionada, escolhida ou corrigida.")
+                    pause()
+                    continue
+                
+                indices_validos.append(novo_num)
+                print("Novo valor aceito!")
+                break        
 
-        if len(indices_validos) == diferenca:
-            indices_validos.sort(reverse=True)
-            for indice in indices_validos:
-                notas.pop(indice - 1)
-            print(f"\n{diferenca} notas removidas com êxito!")
-            break
-
+def remover_notas(diferenca, indices_validos, notas):
+    if len(indices_validos) == diferenca:
+        indices_validos.sort(reverse=True)
+        for indice in indices_validos:
+            notas.pop(indice - 1)
+        print(f"\n{diferenca} notas removidas com êxito!")
+        return True
 
 def editar_nota(quantidade_notas, notas):
     while True:
@@ -786,6 +821,11 @@ def editar_nota(quantidade_notas, notas):
 
         numero_selecionado = escolher_nota(nota_selecionada, quantidade_notas)
 
+        if not numero_selecionado:
+            print("\nSelecione alguma nota.")
+            pause()
+            continue
+        
         if 1 <= numero_selecionado <= quantidade_notas:
 
             print(f"\nA nota {numero_selecionado} é {notas[numero_selecionado - 1]}.")
