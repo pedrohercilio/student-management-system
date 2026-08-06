@@ -181,7 +181,10 @@ def escolher_aluno(alunos):
     if numero_selecionado is not None and 1 <= numero_selecionado <= len(alunos_ordenados):
         nome_selecionado = alunos_ordenados[numero_selecionado - 1]
 
-    return nome_selecionado
+    if nome_selecionado in alunos:
+        return nome_selecionado
+    else:
+        return None
 
 def ler_int(frase):
     while True:
@@ -201,6 +204,7 @@ def ler_float(frase):
 
 def escolher_nota(nota_selecionada, quantidade_notas):
     numero_selecionado = None
+    nota_selecionada = nota_selecionada.strip().title()
     try:
         numero_selecionado = int(nota_selecionada)
     except ValueError:
@@ -609,12 +613,12 @@ def opcao_editarAluno(alunos):
 def editar_nome(alunos, nome_selecionado):
     while True:
         novo_nome = input(f"\nQual o nome que você quer colocar no lugar de {nome_selecionado}? ").strip().title()
-        if novo_nome not in alunos and novo_nome is not "":
+        if novo_nome and novo_nome not in alunos:
            alunos[novo_nome] = alunos.pop(nome_selecionado)
            break
 
         if novo_nome == nome_selecionado:
-            print("\nO novo nome é o mesmo do nome a ser excluído. Escolha outro nome.")
+            print("\nO novo nome é igual ao nome atual. Escolha outro nome.")
             pause()
         else:
             print("\nO nome escolhido já está entre os atuais alunos ou está vazio, por favor, digite outro nome.")
@@ -639,7 +643,7 @@ def editar_quantidadeNotas(quantidade_notas, notas, nome_selecionado):
         elif nova_quantidade == quantidade_notas:
             print("\nA nova quantidade de notas é a mesma da já existente, tente novamente.")
             pause()
-            return
+            continue
 
         novaquantidade_menor(quantidade_notas, nova_quantidade, notas)
         return
@@ -684,7 +688,7 @@ def diferenca_igual(quantidade_notas, notas):
             continue
         
         if numero_selecionado is not None and 1 <= numero_selecionado <= len(notas):
-            notas.remove(notas[numero_selecionado - 1])
+            notas.pop(numero_selecionado - 1)
             print("\nNota removida com êxito!")
             break
         else:
@@ -719,6 +723,11 @@ def ler_notas_remover(notas, diferenca):
             notas_separadas = nota_recebida.split()
             for nota in notas_separadas:
                 notas_para_remover.append(nota)
+        if len(notas_para_remover) != diferenca:
+            print(f"\nDigite exatamente {diferenca} notas.")
+            pause()
+            continue
+        
         if len(notas_para_remover) == diferenca:
             return notas_para_remover
         else:
@@ -834,11 +843,14 @@ def editar_nota(quantidade_notas, notas):
                 nova_nota = ler_float("\nQual será o valor da nova nota? ")
                 if verificacao_nota(nova_nota):
                     break
+                else:
+                    print("\nPor favor, digite uma nota válida! (Nota entre 0 e 10).")
+                    pause()
 
-            if numero_selecionado is not None and 1 <= numero_selecionado <= len(notas):
-                notas[numero_selecionado - 1] = nova_nota
-                print("\nNota atualizada com sucesso!")
-                break
+            
+            notas[numero_selecionado - 1] = nova_nota
+            print("\nNota atualizada com sucesso!")
+            break
 
         else:
             print("\nPor favor, selecione uma nota válida.")
@@ -866,12 +878,7 @@ def opcao_excluirAluno(alunos):
             pause()
 
 def main():
-    # Alunos para exemplo de execução do código
-    alunos = {"Pedro": [8.0, 9.0],
-              "Maria": [9.0, 5.4],
-              "Joao": [7.8, 8.1],
-              "José": [6.4, 4.9],
-              "Ana": [7.8, 5.9]}
+    alunos = {}
 
     while True:
         menuPrincipal()

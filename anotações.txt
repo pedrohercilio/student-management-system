@@ -15,30 +15,31 @@ ctrl c -> para de rodar o site do streamlit
 
 Configuration and Initialization
 
-git config --global user.name "Name" and git config --global user.email "email" 
-git init creates a new local repository in the current directory
-git clone <url> downloads an existing remote repository to your local machine. 
+git config --global user.name "Name"
+git config --global user.email "email" 
+git init -> creates a new local repository in the current directory
+git clone <url> -> downloads an existing remote repository to your local machine. 
 
 
 Staging and Committing Changes
 
-git status displays the current state of tracked and untracked files. 
-git add <filename> or git add . stages files for the next commit.  
-git commit -m "message" saves the staged changes to the local repository history. 
+git status -> displays the current state of tracked and untracked files. 
+git add <filename> or git add . -> stages files for the next commit.  
+git commit -m "message" -> saves the staged changes to the local repository history. 
 
 
 Branching and Merging
 
-git branch lists local branches; 
-git branch <name> creates a new one.  
-git checkout <name> or git switch <name> switches to a branch
-git checkout -b <name> creates and switches to it simultaneously.  
-git merge <branch> integrates changes from another branch into your current one. 
+git branch -> lists local branches; 
+git branch <name> -> creates a new one.  
+git checkout <name> or git switch <name> -> switches to a branch
+git checkout -b <name> -> creates and switches to it simultaneously.  
+git merge <branch> -> integrates changes from another branch into your current one. 
 
 
 Remote Synchronization
 
-git remote add origin <url> connects your local repo to a remote server.  
-git push origin <branch> uploads local commits to the remote repository.  
-git pull fetches and merges remote changes into your current branch
-git fetch only downloads changes without merging
+git remote add origin <url> -> connects your local repo to a remote server.  
+git push origin <branch> -> uploads local commits to the remote repository.  
+git pull -> fetches and merges remote changes into your current branch
+git fetch -> only downloads changes without merging
