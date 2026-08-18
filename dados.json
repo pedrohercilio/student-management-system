@@ -1,0 +1,32 @@
+{
+    "1":{
+        "nome": "Pedro Hercílio",
+        "idade": "18",
+        "e-mail": "pedroherciliom@gmail.com",
+        "ensino":{
+            "escolaridade": "Faculdade",
+            "curso": "Ciência da Computação",
+            "semestre": "2",
+            "cadeiras":{
+                "Engenharia de Software: Fundamentos":{
+                    "dia": "Segunda-Feira",
+                    "notas_GA": "4.0, 3.0, 3.0",
+                    "notas_GB": "4.0, 3.0, 3.0",
+                    "notas_GC": "0"
+                },
+                "Sistemas Digitais":{
+                    "dia": "Terça-Feira",
+                    "notas_GA": "4.0, 3.0, 3.0",
+                    "notas_GB": "4.0, 3.0, 3.0",
+                    "notas_GC": "0"
+                },
+                "Algoritmos e Programação: Orientação a Objetos":{
+                    "dia": "Terça-Feira",
+                    "notas_GA": "4.0, 3.0, 3.0",
+                    "notas_GB": "4.0, 3.0, 3.0",
+                    "notas_GC": "0"
+                }
+            }
+        }
+    }
+}
