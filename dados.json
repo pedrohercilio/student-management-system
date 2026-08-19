@@ -6,25 +6,71 @@
         "ensino":{
             "escolaridade": "Faculdade",
             "curso": "Ciência da Computação",
-            "semestre": "2",
-            "cadeiras":{
-                "Engenharia de Software: Fundamentos":{
-                    "dia": "Segunda-Feira",
-                    "notas_GA": "4.0, 3.0, 3.0",
-                    "notas_GB": "4.0, 3.0, 3.0",
-                    "notas_GC": "0"
+            "condição": "Cursando",
+            "semestre":{
+                "1":{
+                    "Algoritmos e Programação: Fundamentos":{
+                        "dia": "Segunda-Feira",
+                    "notas_GA": [],
+                    "notas_GB": [],
+                    "notas_GC": []
+                    },
+                    "Computação: Conceitos e Tendências da Profissão":{
+                        "dia": "Terça-Feira",
+                        "notas_GA": [],
+                        "notas_GB": [],
+                        "notas_GC": []
+                    },
+                    "Matemática para Computação":{
+                        "dia": "Quarta-Feira",
+                        "notas_GA": [],
+                        "notas_GB": [],
+                        "notas_GC": []
+                    },
+                    "Raciocínio Lógico":{
+                        "dia": "Quinta-Feira",
+                            "notas_GA": [],
+                            "notas_GB": [],
+                            "notas_GC": []
+                    },
+                    "Desenvolvimento Pessoal e Profissional":{
+                        "dia": "Sexta-Feira",
+                        "notas_GA": [],
+                        "notas_GB": [],
+                        "notas_GC": []
+                    }
                 },
-                "Sistemas Digitais":{
-                    "dia": "Terça-Feira",
-                    "notas_GA": "4.0, 3.0, 3.0",
-                    "notas_GB": "4.0, 3.0, 3.0",
-                    "notas_GC": "0"
-                },
-                "Algoritmos e Programação: Orientação a Objetos":{
-                    "dia": "Terça-Feira",
-                    "notas_GA": "4.0, 3.0, 3.0",
-                    "notas_GB": "4.0, 3.0, 3.0",
-                    "notas_GC": "0"
+                "2":{
+                    "Engenharia de Software: Fundamentos":{
+                        "dia": "Segunda-Feira",
+                        "notas_GA": [],
+                        "notas_GB": [],
+                        "notas_GC": []
+                    },
+                    "Sistemas Digitais":{
+                        "dia": "Terça-Feira",
+                        "notas_GA": [],
+                        "notas_GB": [],
+                        "notas_GC": []
+                    },
+                    "Algoritmos e Programação: Orientação a Objetos":{
+                        "dia": "Quarta-Feira",
+                        "notas_GA": [],
+                        "notas_GB": [],
+                        "notas_GC": []
+                    },
+                    "Cálculo Diferencial":{
+                        "dia": "Quinta-Feira",
+                        "notas_GA": [],
+                        "notas_GB": [],
+                        "notas_GC": []
+                    },
+                    "Álgebra Linear e Geometria Analítica":{
+                        "dia": "Sexta-Feira",
+                        "notas_GA": [],
+                        "notas_GB": [],
+                        "notas_GC": [] 
+                    }
                 }
             }
         }
