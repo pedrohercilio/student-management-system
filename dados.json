@@ -1,78 +1,95 @@
 {
     "1":{
         "nome": "Pedro Hercílio",
-        "idade": "18",
-        "e-mail": "pedroherciliom@gmail.com",
+        "idade": 18,
+        "e-mail": "",
+        "celular": "",
+        "CPF": "",
         "ensino":{
             "escolaridade": "Faculdade",
             "curso": "Ciência da Computação",
             "condição": "Cursando",
             "semestre":{
                 "1":{
-                    "Algoritmos e Programação: Fundamentos":{
-                        "dia": "Segunda-Feira",
-                    "notas_GA": [],
-                    "notas_GB": [],
-                    "notas_GC": []
-                    },
-                    "Computação: Conceitos e Tendências da Profissão":{
-                        "dia": "Terça-Feira",
-                        "notas_GA": [],
-                        "notas_GB": [],
-                        "notas_GC": []
-                    },
-                    "Matemática para Computação":{
-                        "dia": "Quarta-Feira",
-                        "notas_GA": [],
-                        "notas_GB": [],
-                        "notas_GC": []
-                    },
-                    "Raciocínio Lógico":{
-                        "dia": "Quinta-Feira",
+                    "disciplinas":[
+                        {
+                            "nome": "Algoritmos e Programação: Fundamentos",
+                            "dia": "Segunda-Feira",
                             "notas_GA": [],
                             "notas_GB": [],
                             "notas_GC": []
-                    },
-                    "Desenvolvimento Pessoal e Profissional":{
-                        "dia": "Sexta-Feira",
-                        "notas_GA": [],
-                        "notas_GB": [],
-                        "notas_GC": []
-                    }
+                        },
+                        {
+                            "nome": "Computação: Conceitos e Tendências da Profissão",
+                            "dia": "Terça-Feira",
+                            "notas_GA": [],
+                            "notas_GB": [],
+                            "notas_GC": []
+                        },
+                        {
+                            "nome": "Matemática para Computação",
+                            "dia": "Quarta-Feira",
+                            "notas_GA": [],
+                            "notas_GB": [],
+                            "notas_GC": []
+                        },
+                        {
+                            "nome": "Raciocínio Lógico",
+                            "dia": "Quinta-Feira",
+                            "notas_GA": [],
+                            "notas_GB": [],
+                            "notas_GC": []
+                        },
+                        {
+                            "nome":"Desenvolvimento Pessoal e Profissional",
+                            "dia": "Sexta-Feira",
+                            "notas_GA": [],
+                            "notas_GB": [],
+                            "notas_GC": []
+                        }
+                    ]
                 },
                 "2":{
-                    "Engenharia de Software: Fundamentos":{
-                        "dia": "Segunda-Feira",
-                        "notas_GA": [],
-                        "notas_GB": [],
-                        "notas_GC": []
-                    },
-                    "Sistemas Digitais":{
-                        "dia": "Terça-Feira",
-                        "notas_GA": [],
-                        "notas_GB": [],
-                        "notas_GC": []
-                    },
-                    "Algoritmos e Programação: Orientação a Objetos":{
-                        "dia": "Quarta-Feira",
-                        "notas_GA": [],
-                        "notas_GB": [],
-                        "notas_GC": []
-                    },
-                    "Cálculo Diferencial":{
-                        "dia": "Quinta-Feira",
-                        "notas_GA": [],
-                        "notas_GB": [],
-                        "notas_GC": []
-                    },
-                    "Álgebra Linear e Geometria Analítica":{
-                        "dia": "Sexta-Feira",
-                        "notas_GA": [],
-                        "notas_GB": [],
-                        "notas_GC": [] 
-                    }
+                    "disciplinas":[
+                        {
+                            "nome": "Engenharia de Software: Fundamentos",
+                            "dia": "Segunda-Feira",
+                            "notas_GA": [],
+                            "notas_GB": [],
+                            "notas_GC": []
+                        },
+                        {
+                            "nome": "Sistemas Digitais",
+                            "dia": "Terça-Feira",
+                            "notas_GA": [],
+                            "notas_GB": [],
+                            "notas_GC": []
+                        },
+                        {
+                            "nome": "Algoritmos e Programação: Orientação a Objetos",
+                            "dia": "Quarta-Feira",
+                            "notas_GA": [],
+                            "notas_GB": [],
+                            "notas_GC": []
+                        },
+                        {
+                            "nome": "Cálculo Diferencial",
+                            "dia": "Quinta-Feira",
+                            "notas_GA": [],
+                            "notas_GB": [],
+                            "notas_GC": []
+                        },
+                        {
+                            "nome": "Algebra Linear e Geometria Analítica",
+                            "dia": "Sexta-Feira",
+                            "notas_GA": [],
+                            "notas_GB": [],
+                            "notas_GC": [] 
+                        }
+                    ]
                 }
             }
         }
-    }
+    },
+    "2":{}
 }
