@@ -9,6 +9,7 @@ from email_validator import validate_email, EmailNotValidError
 import phonenumbers
 from phonenumbers import NumberParseException
 import json
+from validate_docbr import CPF
 
 def ler_json():
     with open("dados.json", "r", encoding="utf-8") as arquivo:
@@ -16,7 +17,7 @@ def ler_json():
         return alunos
 
 
-def verificar_email_completo(email):
+def verificar_email(email):
     try:
         validate_email(email, check_deliverability=True)
         return True
@@ -24,24 +25,30 @@ def verificar_email_completo(email):
         return False
 
     
-def verificar_celular_completo(telefone_digitado):
+def verificar_celular(celular):
     try:
-        # Ele aceita formatos como: "51999999999", "(51) 99999-1111", "51 999991111"
-        numero_objeto = phonenumbers.parse(telefone_digitado, "BR")
+        numero_formatado = phonenumbers.parse(celular, "BR")
         
-        # 1. Verifica se o número é estruturalmente válido (tamanho, formato e DDD existente)
-        if not phonenumbers.is_valid_number(numero_objeto):
+        # Verifica se o número é estruturalmente válido (tamanho, formato e DDD existente)
+        if not phonenumbers.is_valid_number(numero_formatado):
             return False, None
 
-        # Retorna True e o número formatado no padrão internacional E.164 (+5551999999999)
-        # Esse padrão limpo é o ideal para salvar no banco de dados
-        numero_limpo = phonenumbers.format_number(numero_objeto, phonenumbers.PhoneNumberFormat.E164)
+        # Formato do número> E.164 (+5551999999999)
+        numero_limpo = phonenumbers.format_number(numero_formatado, phonenumbers.PhoneNumberFormat.E164)
         return True, numero_limpo
         
     except NumberParseException:
-        # Se o usuário digitar letras ou algo que quebre o interpretador
         return False, None
 
+def celular_paraLeitura(celular):
+    # Formato do número> INTERNATIONAL (+55 (51) 91111-2222)
+    numero_objeto = phonenumbers.parse(celular, "BR")
+    return phonenumbers.format_number(numero_objeto, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+
+def verificar_cpf(cpf):
+    cpf_limpo = "".join(char for char in cpf if char.isdigit())
+
+    validador = CPF()
 
 
 
@@ -130,7 +137,7 @@ def cadastro_aluno():
         email = input("\nDigite o email do aluno: ").strip().lower()
         email2 = input("\nConfirme o email do aluno: ").strip().lower()
         if email == email2:
-            if verificar_email_completo(email):
+            if verificar_email(email):
                 novo_aluno["e-mail"] = email
                 break
             else:
@@ -141,7 +148,22 @@ def cadastro_aluno():
 
     # cadastro do celular
     while True:
-        pass
+        celular = input("\nDigite o número de celular do aluno: ")
+        if verificar_celular(celular):
+            novo_aluno["celular"] = celular
+            break
+        else:
+            print("\nPor favor, digite um número de celular válido")
+
+
+    # cadastro do CPF
+    while True:
+        cpf = input("\nDigite o CPF do aluno: ")
+        if verificar_cpf(cpf):
+            novo_aluno["CPF"] = cpf
+            break
+        else:
+            print("\nPor favor, digite um CPF válido.")
 
 
 
@@ -168,5 +190,5 @@ def cadastro_aluno():
 
     alunos[nome] = notas
 
-print(ler_json())
-cadastro_aluno()
+# print(ler_json())
+# cadastro_aluno()"
