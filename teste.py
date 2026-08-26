@@ -11,6 +11,8 @@ from phonenumbers import NumberParseException
 import json
 from validate_docbr import CPF
 
+
+
 def ler_json():
     with open("dados.json", "r", encoding="utf-8") as arquivo:
         alunos = json.load(arquivo)
@@ -29,7 +31,6 @@ def verificar_celular(celular):
     try:
         numero_formatado = phonenumbers.parse(celular, "BR")
         
-        # Verifica se o número é estruturalmente válido (tamanho, formato e DDD existente)
         if not phonenumbers.is_valid_number(numero_formatado):
             return False, None
 
@@ -47,8 +48,16 @@ def celular_paraLeitura(celular):
 
 def verificar_cpf(cpf):
     cpf_limpo = "".join(char for char in cpf if char.isdigit())
-
     validador = CPF()
+
+    if validador.validate(cpf_limpo):
+        return True, cpf_limpo
+    else:
+        return False, None
+
+def cpf_paraLeitura(cpf):
+    validador = CPF()
+    return validador.mask(cpf)
 
 
 
@@ -165,30 +174,4 @@ def cadastro_aluno():
         else:
             print("\nPor favor, digite um CPF válido.")
 
-
-
-
-    while True:
-        qtde_notas = ler_int("\nDigite quantas notas o aluno possui: ")
-        if qtde_notas > 0:
-                break
-        else:
-            print("\nDigite um valor maior que 0.")
-            pause()
-
-    notas_validas = 0
-    notas = []
-
-    while notas_validas < qtde_notas:
-        nota = ler_float("\nDigite uma nota do usuário: ")
-        if verificacao_nota(nota):
-            notas.append(nota)
-            notas_validas += 1
-        else:
-            print("\nPor favor, digite um valor válido! (Nota entre 0 e 10)")
-            pause()
-
-    alunos[nome] = notas
-
-# print(ler_json())
-# cadastro_aluno()"
+    # cadastro da escolaridade
