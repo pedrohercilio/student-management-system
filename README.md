@@ -1,74 +1,53 @@
 # 🎓 Sistema de Gerenciamento de Alunos
 
-Sistema desenvolvido em Python para cadastro e gerenciamento de alunos através de um menu interativo no terminal.
+Sistema de gerenciamento acadêmico desenvolvido em Python, executado através do terminal.
 
-O projeto foi criado com o objetivo de praticar programação estruturada, organização de código, manipulação de arquivos e versionamento utilizando Git, evoluindo gradualmente para uma aplicação mais completa.
+O projeto permite cadastrar e gerenciar alunos e notas, além de realizar análises de desempenho da turma.
+
 
 ---
 
 ## 📌 Funcionalidades
 
-- Cadastro de alunos.
-- Consulta de informações cadastradas.
-- Alteração de dados dos alunos.
-- Remoção de registros.
-- Listagem de alunos em ordem alfabética.
-- Persistência dos dados em arquivos CSV.
-- Validação das entradas do usuário.
-- Interface baseada em menus interativos.
-- Tratamento de erros utilizando exceções.
-
+- Cadastro, edição e exclusão de alunos
+- Consulta de informações cadastradas
+- Cadastro e gerenciamento de notas
+- Cálculo de médias e situação acadêmica
+- Análise de desempenho e ranking da turma
+- Validação das entradas do usuário
+- Interface baseada em menus interativos
+- Tratamento de erros utilizando exceções
 ---
 
 ## 🛠 Tecnologias
 
 - Python
-- Git
-- CSV (persistência de dados)
+- Git / GitHub
+- JSON (persistência em desenvolvimento)
 
 ---
 
 ## 📚 Conceitos aplicados
 
-- Programação Estruturada
-- Modularização
-- Funções
-- Dicionários
-- Listas
-- Manipulação de Arquivos CSV
-- Tratamento de Exceções (`try` / `except`)
-- Validação de Dados
-- Organização de Projetos
+- Programação estruturada
+- Funções e modularização
+- Listas e dicionários
+- Validação e tratamento de exceções
+- Estruturas condicionais e de repetição
 - Versionamento com Git
+- Manipulação e persistência de dados
 
 ---
 
-## 🚀 Próximas melhorias
+## 💾 Próximos passos
 
-- Organização do projeto em múltiplos módulos.
-- Integração com banco de dados SQL.
-- Refatoração da estrutura do código.
-- Melhorias na interface do usuário.
-- Expansão das funcionalidades de gerenciamento.
+O projeto está em desenvolvimento, com foco atual na implementação da persistência dos dados em arquivos JSON, permitindo que as informações dos alunos sejam mantidas mesmo após o encerramento do programa.
 
 ---
 
-## 💡 Aprendizados
+## 🎯 Objetivo
 
-Este projeto representa minha evolução na programação em Python.
-
-Durante seu desenvolvimento pratiquei conceitos como:
-
-- lógica de programação;
-- organização de código;
-- reutilização de funções;
-- manipulação de arquivos;
-- estruturas de dados;
-- tratamento de exceções;
-- versionamento utilizando Git.
-
-O projeto continua em evolução conforme avanço nos estudos em Ciência da Computação.
-
+Projeto desenvolvido para praticar e consolidar conhecimentos em Python e lógica de programação, evoluindo gradualmente conforme novos conceitos são aprendidos.
 
 ---
 
@@ -77,13 +56,13 @@ O projeto continua em evolução conforme avanço nos estudos em Ciência da Com
 Clone o repositório:
 
 ```bash
-git clone https://github.com/pedrohercilio/gerenciamento-alunos.git
+git clone https://github.com/pedrohercilio/student-management-system.git
 ```
 
 Entre na pasta:
 
 ```bash
-cd gerenciamento-alunos
+cd student-management-system
 ```
 
 Execute:
@@ -96,7 +75,6 @@ python main.py
 
 ## 👨‍💻 Autor
 
-Pedro Hercílio Montezano Alves
+**Pedro Hercílio Montezano Alves**
 
-GitHub:
-https://github.com/pedrohercilio
+GitHub: [pedrohercilio](https://github.com/pedrohercilio)
