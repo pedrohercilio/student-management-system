@@ -96,34 +96,60 @@ def cadastrar_idade(novo_aluno):
     idade = ler_int("\nDigite a idade do aluno: ")
     novo_aluno["idade"] = idade
 
-def cadastrar_email(novo_aluno):
+def cadastrar_email(alunos, novo_aluno):
     while True:
         email = input("\nDigite o email do aluno: ").strip().lower()
         email2 = input("\nConfirme o email do aluno: ").strip().lower()
         if email == email2:
             if verificar_email(email):
-                novo_aluno["e-mail"] = email
-                break
+                for i in range(1, len(alunos)):
+                    if email in alunos[str(i)]["email"]:
+                        print("\nEmail já cadastrado.")
+                        pause()
+                        continue
+                    else:
+                        validacao = True
+        
+                if validacao:
+                    novo_aluno["email"] = email
+                    break 
             else:
                 print("\nPor favlor, digite um email válido.")
         else:
             print("\nOs emails digitados não correspondem, por favor digite-os novamente.")
 
-def cadastrar_celular(novo_aluno):
+def cadastrar_celular(alunos, novo_aluno):
     while True:
         celular = input("\nDigite o número de celular do aluno: ")
         if verificar_celular(celular):
-            novo_aluno["celular"] = celular
-            break
+            for i in range(1, len(alunos)):
+                if celular in alunos[str(i)]["celular"]:
+                    print("\nNúmero de celular já cadastrado.")
+                    pause()
+                    continue
+                else:
+                    validacao = True
+            if validacao:
+                novo_aluno["celular"] = celular
+                break
         else:
             print("\nPor favor, digite um número de celular válido")
 
-def cadastrar_cpf(novo_aluno):
+def cadastrar_cpf(alunos, novo_aluno):
     while True:
         cpf = input("\nDigite o CPF do aluno: ")
         if verificar_cpf(cpf):
-            novo_aluno["CPF"] = cpf
-            break
+            for i in range(1, len(alunos)):
+                if cpf in alunos[str(i)]["CPF"]:
+                    print("\nCPF já cadastrado.")
+                    pause()
+                    continue
+                else:
+                    validacao = True
+    
+            if validacao:
+                novo_aluno["CPF"] = cpf
+                break
         else:
             print("\nPor favor, digite um CPF válido.")
 
