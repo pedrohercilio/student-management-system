@@ -5,11 +5,7 @@ from util import (
     ler_int
 )
 from logica import verificacao_nota
-from email_validator import validate_email, EmailNotValidError
-import phonenumbers
-from phonenumbers import NumberParseException
 import json
-from validate_docbr import CPF
 
 
 
@@ -18,54 +14,16 @@ def ler_json():
         alunos = json.load(arquivo)
         return alunos
 
-
-def verificar_email(email):
-    try:
-        validate_email(email, check_deliverability=True)
-        return True
-    except EmailNotValidError:
-        return False
-
-    
-def verificar_celular(celular):
-    try:
-        numero_formatado = phonenumbers.parse(celular, "BR")
-        
-        if not phonenumbers.is_valid_number(numero_formatado):
-            return False, None
-
-        # Formato do número> E.164 (+5551999999999)
-        numero_limpo = phonenumbers.format_number(numero_formatado, phonenumbers.PhoneNumberFormat.E164)
-        return True, numero_limpo
-        
-    except NumberParseException:
-        return False, None
-
-def celular_paraLeitura(celular):
-    # Formato do número> INTERNATIONAL (+55 (51) 91111-2222)
-    numero_objeto = phonenumbers.parse(celular, "BR")
-    return phonenumbers.format_number(numero_objeto, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-
-def verificar_cpf(cpf):
-    cpf_limpo = "".join(char for char in cpf if char.isdigit())
-    validador = CPF()
-
-    if validador.validate(cpf_limpo):
-        return True, cpf_limpo
-    else:
-        return False, None
-
-def cpf_paraLeitura(cpf):
-    validador = CPF()
-    return validador.mask(cpf)
-
-
-
 def cadastrar_matricula(alunos, novo_aluno):
-    numeros_de_matricula = list(alunos.keys())
-    ultima_matricula = int(numeros_de_matricula[len(numeros_de_matricula) - 1])
-    num_matricula = ultima_matricula + 1
-    novo_aluno["matricula"] = "0" + str(num_matricula)
+    # Calcula o próximo número de referência (chave do JSON) de forma robusta
+    try:
+        maior = max(int(k) for k in alunos.keys())
+    except ValueError:
+        maior = 0
+    num_matricula = maior + 1
+    # Valor de matrícula usado dentro do registro (ex: "01", "02")
+    novo_aluno["matricula"] = str(num_matricula).zfill(2)
+    return num_matricula
         
 def cadastrar_nome(alunos, novo_aluno):
     while True:
@@ -76,19 +34,19 @@ def cadastrar_nome(alunos, novo_aluno):
         nome_completo = nome + " " + sobrenome
 
         if not nome or not sobrenome:
-            print("Digite algum nome.")
+            print("\nDigite algum nome.")
             pause()
             continue
 
-        for i in range(1, len(alunos)):
-            if nome_completo in alunos[str(i)]["nome"]:
+        # Verifica existência de aluno com mesmo nome
+        for i in range(1, len(alunos) + 1):
+            key = str(i)
+            if key in alunos and nome_completo == alunos[key].get("nome"):
                 print("\nAluno já cadastrado.")
                 pause()
-                continue
-            else:
-                validacao = True
-
-        if validacao:
+                break
+        else:
+            # Não encontrou, valida
             novo_aluno["nome"] = nome_completo
             break 
 
@@ -96,74 +54,16 @@ def cadastrar_idade(novo_aluno):
     idade = ler_int("\nDigite a idade do aluno: ")
     novo_aluno["idade"] = idade
 
-def cadastrar_email(alunos, novo_aluno):
-    while True:
-        email = input("\nDigite o email do aluno: ").strip().lower()
-        email2 = input("\nConfirme o email do aluno: ").strip().lower()
-        if email == email2:
-            if verificar_email(email):
-                for i in range(1, len(alunos)):
-                    if email in alunos[str(i)]["email"]:
-                        print("\nEmail já cadastrado.")
-                        pause()
-                        continue
-                    else:
-                        validacao = True
-        
-                if validacao:
-                    novo_aluno["email"] = email
-                    break 
-            else:
-                print("\nPor favlor, digite um email válido.")
-        else:
-            print("\nOs emails digitados não correspondem, por favor digite-os novamente.")
-
-def cadastrar_celular(alunos, novo_aluno):
-    while True:
-        celular = input("\nDigite o número de celular do aluno: ")
-        if verificar_celular(celular):
-            for i in range(1, len(alunos)):
-                if celular in alunos[str(i)]["celular"]:
-                    print("\nNúmero de celular já cadastrado.")
-                    pause()
-                    continue
-                else:
-                    validacao = True
-            if validacao:
-                novo_aluno["celular"] = celular
-                break
-        else:
-            print("\nPor favor, digite um número de celular válido")
-
-def cadastrar_cpf(alunos, novo_aluno):
-    while True:
-        cpf = input("\nDigite o CPF do aluno: ")
-        if verificar_cpf(cpf):
-            for i in range(1, len(alunos)):
-                if cpf in alunos[str(i)]["CPF"]:
-                    print("\nCPF já cadastrado.")
-                    pause()
-                    continue
-                else:
-                    validacao = True
-    
-            if validacao:
-                novo_aluno["CPF"] = cpf
-                break
-        else:
-            print("\nPor favor, digite um CPF válido.")
-
-def cadastrar_ensino(novo_aluno):
-    # ensino {
-    #       turma / ano / semestre
-    #       turno (manha, tarde, noite)
-    #       notas por período
-    #       notas de recuperação
-    #       presença (porcentagem)
-    #}
+def cadastrar_notas():
+    # Placeholder por enquanto
     pass
 
 
+def salvar_aluno_em_json(alunos, novo_aluno, num_referencia):
+    # Adiciona o novo aluno ao dicionário e grava em dados.json
+    alunos[str(num_referencia)] = novo_aluno
+    with open("dados.json", "w", encoding="utf-8") as arquivo:
+        json.dump(alunos, arquivo, ensure_ascii=False, indent=4)
 
 def cadastro_aluno():
 
@@ -172,28 +72,20 @@ def cadastro_aluno():
     novo_aluno = {"matricula": "",
                   "nome": "",
                   "idade": 0,
-                  "e-mail": "",
-                  "celular": "",
-                  "CPF": "",
-                  "ensino":{
-                      }
+                  "notas": []
                  }
 
-    cadastrar_matricula(alunos, novo_aluno)
+    num_referencia = cadastrar_matricula(alunos, novo_aluno)
 
     cadastrar_nome(alunos, novo_aluno)
 
     cadastrar_idade(novo_aluno)
 
-    cadastrar_email(novo_aluno)
-
-    cadastrar_celular(novo_aluno)
-
-    cadastrar_cpf(novo_aluno)
-
-    #       contato de resposável (caso menor de idade)
-
-    print("\nmatricula, nome, idade, email, celular e cpf cadastrados com sucesso!\n")
+    print("\nmatricula, nome e idade cadastrados com sucesso!\n")
     print(novo_aluno)
+
+    # Salva o novo aluno no arquivo dados.json com a próxima chave numérica
+    salvar_aluno_em_json(alunos, novo_aluno, num_referencia)
+    print(f"\nAluno salvo em dados.json com referência {num_referencia}.")
 
 cadastro_aluno()
