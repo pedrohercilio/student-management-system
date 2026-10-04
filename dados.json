@@ -1,14 +1,8 @@
 {
     "1":{
-        "matricula": "01",
-        "nome": "Pedro Hercílio",
-        "idade": 18,
-        "notas": []
-    },
-    "2":{
-        "matricula": "02",
-        "nome": "Fulano",
-        "idade": 0,
-        "notas": []
+        "Matricula": "",
+        "Nome": "",
+        "Idade": 0,
+        "Notas": []
     }
 }

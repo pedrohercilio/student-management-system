@@ -32,7 +32,8 @@ def media_turma_medias(alunos):
     if not alunos:
         return 0
     lista_notas = []
-    for notas in alunos.values():
+    for aluno in alunos.values():
+        notas = aluno["notas"]
         media = calcular_media(notas)
         lista_notas.append(media)
     return sum(lista_notas)/len(lista_notas)
@@ -40,7 +41,8 @@ def media_turma_medias(alunos):
 def media_turma_notas(alunos):
     soma_notas = 0
     len_notas = 0
-    for notas in alunos.values():
+    for aluno in alunos.values():
+        notas = aluno["notas"]
         soma_notas = soma_notas + sum(notas)
         len_notas = len_notas + len(notas)
 
@@ -53,7 +55,8 @@ def aluno_melhor(alunos):
     maior_nota = float('-inf')
     # Garante que a primeira média encontrada seja armazenada.
 
-    for aluno, notas in alunos.items():
+    for aluno, registro in alunos.items():
+        notas = registro["notas"]
         media = calcular_media(notas)
 
         if media > maior_nota:
@@ -70,7 +73,8 @@ def aluno_pior(alunos):
     menor_nota = float('inf')
     # Garante que a primeira média encontrada seja armazenada.
 
-    for aluno, notas in alunos.items():
+    for aluno, registro in alunos.items():
+        notas = registro["notas"]
         media = calcular_media(notas)
 
         if media < menor_nota:
@@ -86,7 +90,8 @@ def qtde_aprovacao(alunos):
     aprovados = 0
     em_recuperacao = 0
     reprovados = 0
-    for notas in alunos.values():
+    for aluno in alunos.values():
+        notas = aluno["notas"]
         aprovacao, media = situacao_aluno(notas)
         if aprovacao == "Aprovado":
             aprovados += 1
@@ -102,7 +107,8 @@ def qtde_de_notas(alunos):
     n4_6 = 0
     n2_4 = 0
     n0_2 = 0
-    for notas in alunos.values():
+    for aluno in alunos.values():
+        notas = aluno["notas"]
         for nota in notas:
             if 8 <= nota <= 10:
                 n8_10 += 1
@@ -124,7 +130,8 @@ def diferenca_notas(notas):
 def aluno_consistente(alunos):
     consistencia = float("inf")
     aluno_ci = []
-    for aluno, notas in alunos.items():
+    for aluno, registro in alunos.items():
+        notas = registro["notas"]
         diferenca = diferenca_notas(notas)
 
         if diferenca < consistencia:
@@ -139,7 +146,8 @@ def aluno_consistente(alunos):
 def aluno_irregular(alunos):
     consistencia = float("-inf")
     aluno_ci = []
-    for aluno, notas in alunos.items():
+    for aluno, registro in alunos.items():
+        notas = registro["notas"]
         diferenca = diferenca_notas(notas)
 
         if diferenca > consistencia:
@@ -153,43 +161,11 @@ def aluno_irregular(alunos):
 
 def ranking_alunos(alunos):
     # Ordena os alunos pela média em ordem decrescente.
-    return sorted(alunos.items(), reverse=True, key=lambda item: calcular_media(item[1]))
-
-def cadastro_aluno(alunos):
-    while True:
-        nome = input("\nDigite o nome do aluno: ").strip().title()
-
-        if not nome:
-            print("Digite algum nome.")
-            pause()
-            continue
-
-        if nome in alunos:
-            print("Aluno já cadastrado.")
-        else:
-            break
-
-    while True:
-        qtde_notas = ler_int("\nDigite quantas notas o aluno possui: ")
-        if qtde_notas > 0:
-                break
-        else:
-            print("\nDigite um valor maior que 0.")
-            pause()
-
-    notas_validas = 0
-    notas = []
-
-    while notas_validas < qtde_notas:
-        nota = ler_float("\nDigite uma nota do usuário: ")
-        if verificacao_nota(nota):
-            notas.append(nota)
-            notas_validas += 1
-        else:
-            print("\nPor favor, digite um valor válido! (Nota entre 0 e 10)")
-            pause()
-
-    alunos[nome] = notas
+    return sorted(
+        alunos.items(),
+        reverse=True,
+        key=lambda item: calcular_media(item[1]["notas"])
+    )
 
 def editar_nome(alunos, nome_selecionado):
     while True:
@@ -366,7 +342,7 @@ def corrigir_notas(itens_para_corrigir, notas, quantidade_notas, indices_validos
                     if novo_valor.startswith("Nota"):
                         try: 
                             novo_num = int(novo_valor.split()[1])
-                        except: 
+                        except ValueError: 
                             pass
                     if novo_num is None:
                         for i in range(len(notas)):

@@ -1,14 +1,14 @@
 from rich import print
 from menus import menuPrincipal
 from opcoes import opcoes
-from logica import cadastro_aluno
+from cadastro import cadastro_aluno, ler_json, salvar_json
 from util import (
     recebe_escolha,
     pause
 )
 
-def main():
-    alunos = {}
+if __name__ == "__main__":
+    alunos = ler_json()
 
     while True:
         menuPrincipal()
@@ -26,11 +26,10 @@ def main():
             opcoes(alunos)
 
         elif escolha == 0:
-            print("\nFim do programa")
+            print("\nFim do programa... Dados salvos com sucesso!")
+            salvar_json(alunos)
             break
 
         else:
             print("\nEscolha uma das opções.")
             pause()
-if __name__ == "__main__":
-    main()

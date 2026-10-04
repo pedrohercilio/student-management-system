@@ -86,7 +86,7 @@ def opcao_alunoEspecifico(alunos):
         nome_selecionado = escolher_aluno(alunos)
 
         if nome_selecionado is not None and nome_selecionado in alunos:
-            situacao, media = l.situacao_aluno(alunos[nome_selecionado])
+            situacao, media = l.situacao_aluno(alunos[nome_selecionado]["notas"])
             print(f"\n{nome_selecionado} está {situacao} com média de {media:.2f} pontos.")
             pause()
             break
@@ -202,7 +202,8 @@ def opcao_ranking(alunos):
 
 def opcao_rankingTurma(alunos):
     print(f"\nRanking da turma:")
-    for ordem, (aluno, notas) in enumerate(l.ranking_alunos(alunos), start=1):
+    for ordem, (aluno, registro) in enumerate(l.ranking_alunos(alunos), start=1):
+        notas = registro["notas"]
         media = l.calcular_media(notas)
         print(f"{ordem}º - {aluno}, Média: {media:.2f}")
 
@@ -210,7 +211,8 @@ def opcao_rankingTurma(alunos):
 
 def opcao_top3(alunos):
     print("\nTop 3 alunos:")
-    for ordem, (aluno, notas) in enumerate(l.ranking_alunos(alunos), start=1):
+    for ordem, (aluno, registro) in enumerate(l.ranking_alunos(alunos), start=1):
+        notas = registro["notas"]
         media = l.calcular_media(notas)
         if ordem <= 3:
             print(f"{ordem}º - {aluno}, Média: {media:.2f}")
@@ -246,8 +248,8 @@ def opcao_infoAlunos(alunos):
     alunos_ordenados = sorted(alunos)
 
     for aluno in alunos_ordenados:
-        qtde_notas = len(alunos[aluno])
-        notas = alunos[aluno]
+        notas = alunos[aluno]["notas"]
+        qtde_notas = len(notas)
         media = l.calcular_media(notas)
 
         print(f"\nNome: {aluno} -- Qtde de notas: {qtde_notas} -- Notas: {notas} -- Média: {media:.2f}")
@@ -263,8 +265,8 @@ def opcao_editarAluno(alunos):
         if nome_selecionado is not None and nome_selecionado in alunos:
             while True:
 
-                qtde_notas = len(alunos[nome_selecionado])
-                notas = alunos[nome_selecionado]
+                notas = alunos[nome_selecionado]["notas"]
+                qtde_notas = len(notas)
                 media = l.calcular_media(notas)
 
                 print("\nInformações do aluno:")
