@@ -9,11 +9,20 @@ import json
 
 
 def ler_json():
-    with open("dados.json", "r", encoding="utf-8") as arquivo:
-        registros = json.load(arquivo)
+    try:
+        with open("dados.json", "r", encoding="utf-8") as arquivo:
+            conteudo = arquivo.read()
+    except FileNotFoundError:
+        with open("dados.json", "w", encoding="utf-8") as arquivo:
+            json.dump({}, arquivo, ensure_ascii=False, indent=4)
+        return {}
 
-    if not isinstance(registros, dict):
-        raise ValueError("dados.json deve conter um objeto JSON de alunos.")
+    if not conteudo.strip():
+        registros = {}
+        with open("dados.json", "w", encoding="utf-8") as arquivo:
+            json.dump(registros, arquivo, ensure_ascii=False, indent=4)
+    else:
+        registros = json.loads(conteudo)
 
     alunos = {}
     for referencia, aluno in registros.items():
@@ -82,7 +91,8 @@ def cadastrar_nome(alunos, novo_aluno):
 
 def cadastrar_idade(novo_aluno):
     idade = ler_int("\nDigite a idade do aluno: ")
-    novo_aluno["idade"] = idade
+    if idade > 0:
+        novo_aluno["idade"] = idade
 
 def cadastrar_notas(novo_aluno):
     while True:
