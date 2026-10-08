@@ -1,19 +1,27 @@
 {
     "1": {
         "matricula": "01",
-        "nome": "Pedro Alves",
-        "idade": 18,
-        "notas": [
-            10.0
-        ]
-    },
-    "2": {
-        "matricula": "02",
-        "nome": "Pedro",
+        "nome": "Joao Vitor",
         "idade": 18,
         "notas": [
             10.0,
+            8.0
+        ]
+    },
+    "3": {
+        "matricula": "03",
+        "nome": "Mateus Moro",
+        "idade": 19,
+        "notas": [
             9.0
+        ]
+    },
+    "4": {
+        "matricula": "04",
+        "nome": "Frederico Rivero",
+        "idade": 18,
+        "notas": [
+            8.0
         ]
     }
 }

@@ -169,7 +169,22 @@ def ranking_alunos(alunos):
 
 def editar_nome(alunos, nome_selecionado):
     while True:
-        novo_nome = input(f"\nQual o nome que você quer colocar no lugar de {nome_selecionado}? ").strip().title()
+        while True:
+            novo_1nome = input(f"\nQual o nome que você quer colocar no lugar de {nome_selecionado}? ").strip().title()
+            if novo_1nome == "":
+                print("\nNome digitado em branco, digite-o novamente.")
+                pause()
+                continue
+            else: break
+
+        while True:
+            novo_sobrenome = input(f"\nE qual sobrenome? ").strip().title()
+            if novo_sobrenome == "":
+                print("\nSobrenome digitado em branco, digite-o novamente.")
+                pause()
+                continue
+            else: break
+        novo_nome = novo_1nome + " " + novo_sobrenome
         if novo_nome and novo_nome not in alunos:
            alunos[novo_nome] = alunos.pop(nome_selecionado)
            break
