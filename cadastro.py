@@ -4,62 +4,12 @@ from util import (
     ler_float,
     ler_int
 )
-from logica import verificacao_nota
-import json
+from logica import (
+    verificacao_nota,
+    ler_json,
+    salvar_json
+)
 
-
-def ler_json():
-    try:
-        with open("dados.json", "r", encoding="utf-8") as arquivo:
-            conteudo = arquivo.read()
-    except FileNotFoundError:
-        with open("dados.json", "w", encoding="utf-8") as arquivo:
-            json.dump({}, arquivo, ensure_ascii=False, indent=4)
-        return {}
-
-    if not conteudo.strip():
-        registros = {}
-        with open("dados.json", "w", encoding="utf-8") as arquivo:
-            json.dump(registros, arquivo, ensure_ascii=False, indent=4)
-    else:
-        registros = json.loads(conteudo)
-
-    alunos = {}
-    for referencia, aluno in registros.items():
-        if not referencia.isdigit():
-            raise ValueError(f"A referência do aluno {referencia} deve ser numérica.")
-        if not isinstance(aluno, dict):
-            raise ValueError(f"O registro do aluno {referencia} deve ser um objeto.")
-
-        campos_obrigatorios = ("matricula", "nome", "idade", "notas")
-        if any(campo not in aluno for campo in campos_obrigatorios):
-            raise ValueError(f"O registro do aluno {referencia} não contém todos os campos obrigatórios.")
-        if not isinstance(aluno["nome"], str) or not isinstance(aluno["notas"], list):
-            raise ValueError(f"O registro do aluno {referencia} possui campos inválidos.")
-        if aluno["nome"] in alunos:
-            raise ValueError(f"Há mais de um aluno com o nome {aluno['nome']}.")
-
-        registro = aluno.copy()
-        registro["_referencia"] = str(referencia)
-        alunos[registro["nome"]] = registro
-
-    return alunos
-
-
-def salvar_json(alunos):
-    registros = {}
-    for nome, aluno in alunos.items():
-        referencia = str(aluno["_referencia"])
-        registro = {
-            campo: valor
-            for campo, valor in aluno.items()
-            if campo != "_referencia"
-        }
-        registro["nome"] = nome
-        registros[referencia] = registro
-
-    with open("dados.json", "w", encoding="utf-8") as arquivo:
-        json.dump(registros, arquivo, ensure_ascii=False, indent=4)
 
 def cadastrar_matricula(alunos, novo_aluno):
     maior = max(

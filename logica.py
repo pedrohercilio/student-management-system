@@ -5,6 +5,7 @@ from util import (
     ler_float,
     ler_int
 )
+import json
 
 def verificacao_nota(nota):
     if 0 <= nota <= 10:
@@ -426,3 +427,123 @@ def editar_nota(quantidade_notas, notas):
         else:
             print("\nPor favor, selecione uma nota válida.")
             pause()
+
+def escrever_json():
+    with open("dados.json", "w", encoding="utf-8") as arquivo:
+        json.dump({}, arquivo, ensure_ascii=False, indent=4)
+
+def _perguntar_tentar_novamente():
+    while True:
+        escolha = input(
+            "\nDeseja tentar carregar novamente depois de corrigir o arquivo? (Y/N) "
+        ).strip().upper()
+        if escolha == "Y":
+            return True
+        if escolha == "N":
+            print("\nEncerrando o programa...\n")
+            return False
+        print("\nOpção inválida. Digite Y para tentar novamente ou N para encerrar.")
+
+
+def _validar_registros(registros):
+    if not isinstance(registros, dict):
+        raise ValueError("o conteúdo principal deve ser um objeto JSON.")
+
+    alunos = {}
+    campos_obrigatorios = ("matricula", "nome", "idade", "notas")
+
+    for referencia, aluno in registros.items():
+        if not isinstance(referencia, str) or not referencia.isdigit():
+            raise ValueError(f"a referência do aluno {referencia!r} deve ser numérica.")
+        if not isinstance(aluno, dict):
+            raise ValueError(f"o registro do aluno {referencia} deve ser um objeto.")
+        if any(campo not in aluno for campo in campos_obrigatorios):
+            raise ValueError(
+                f"o registro do aluno {referencia} não contém todos os campos obrigatórios."
+            )
+
+        if not isinstance(aluno["matricula"], str):
+            raise ValueError(f"a matrícula do aluno {referencia} deve ser texto.")
+        if not isinstance(aluno["nome"], str) or not aluno["nome"].strip():
+            raise ValueError(f"o nome do aluno {referencia} deve ser um texto não vazio.")
+        if (
+            not isinstance(aluno["idade"], int)
+            or isinstance(aluno["idade"], bool)
+            or aluno["idade"] <= 0
+        ):
+            raise ValueError(f"a idade do aluno {referencia} deve ser um inteiro positivo.")
+        if not isinstance(aluno["notas"], list):
+            raise ValueError(f"as notas do aluno {referencia} devem estar em uma lista.")
+        if any(
+            not isinstance(nota, (int, float))
+            or isinstance(nota, bool)
+            or not 0 <= nota <= 10
+            for nota in aluno["notas"]
+        ):
+            raise ValueError(
+                f"as notas do aluno {referencia} devem ser números entre 0 e 10."
+            )
+        if aluno["nome"] in alunos:
+            raise ValueError(f"há mais de um aluno com o nome {aluno['nome']}.")
+
+        registro = aluno.copy()
+        registro["_referencia"] = referencia
+        alunos[registro["nome"]] = registro
+
+    return alunos
+
+
+def ler_json():
+    while True:
+        try:
+            try:
+                with open("dados.json", "r", encoding="utf-8") as arquivo:
+                    conteudo = arquivo.read()
+            except FileNotFoundError:
+                escrever_json()
+                return {}
+            except (OSError, UnicodeDecodeError):
+                print(
+                    "\nNão foi possível ler o arquivo dados.json. "
+                    "Verifique se ele existe e se está acessível."
+                )
+                if _perguntar_tentar_novamente():
+                    continue
+                return None
+
+            if not conteudo.strip():
+                escrever_json()
+                return {}
+
+            registros = json.loads(conteudo)
+            return _validar_registros(registros)
+
+        except json.JSONDecodeError:
+            print("\nO arquivo dados.json contém um JSON inválido.")
+        except ValueError as erro:
+            print(f"\nO arquivo dados.json possui uma estrutura inválida: {erro}")
+        except OSError:
+            print(
+                "\nO arquivo dados.json foi lido, mas não foi possível "
+                "inicializá-lo ou acessá-lo."
+            )
+
+        if _perguntar_tentar_novamente():
+            continue
+        return None
+
+
+def salvar_json(alunos):
+    registros = {}
+    for nome, aluno in alunos.items():
+        referencia = str(aluno["_referencia"])
+        registro = {
+            campo: valor
+            for campo, valor in aluno.items()
+            if campo != "_referencia"
+        }
+        registro["nome"] = nome
+        registros[referencia] = registro
+
+    with open("dados.json", "w", encoding="utf-8") as arquivo:
+        json.dump(registros, arquivo, ensure_ascii=False, indent=4)

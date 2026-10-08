@@ -322,7 +322,7 @@ def opcao_excluirAluno(alunos):
         aluno_escolhido = escolher_aluno(alunos)
         if aluno_escolhido is not None and aluno_escolhido in alunos:
             while True:
-                escolha = input(f"\nTem certeza que deseja excluir {aluno_escolhido} da lista? (y/n) ").capitalize()
+                escolha = input(f"\nTem certeza que deseja excluir {aluno_escolhido} da lista? (y/n) ").strip().upper()
                 if escolha == 'Y':
                     alunos.pop(aluno_escolhido)
                     print(f"\nAluno excluído com sucesso!")

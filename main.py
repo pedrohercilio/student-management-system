@@ -10,6 +10,9 @@ from util import (
 if __name__ == "__main__":
     alunos = ler_json()
 
+    if alunos is None:
+        raise SystemExit
+
     while True:
         menuPrincipal()
 
