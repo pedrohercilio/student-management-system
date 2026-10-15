@@ -29,8 +29,8 @@ if __name__ == "__main__":
             opcoes(alunos)
 
         elif escolha == 0:
-            print("\nFim do programa... Dados salvos com sucesso!")
             salvar_json(alunos)
+            print("\nFim do programa...")
             break
 
         else:

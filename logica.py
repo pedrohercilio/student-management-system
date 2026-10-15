@@ -474,6 +474,8 @@ def _validar_registros(registros):
             raise ValueError(f"a idade do aluno {referencia} deve ser um inteiro positivo.")
         if not isinstance(aluno["notas"], list):
             raise ValueError(f"as notas do aluno {referencia} devem estar em uma lista.")
+        if not aluno["notas"]:
+            raise ValueError(f"o aluno {referencia} deve possuir pelo menos uma nota.")
         if any(
             not isinstance(nota, (int, float))
             or isinstance(nota, bool)
@@ -547,3 +549,5 @@ def salvar_json(alunos):
 
     with open("dados.json", "w", encoding="utf-8") as arquivo:
         json.dump(registros, arquivo, ensure_ascii=False, indent=4)
+
+    print("\nDados salvos com sucesso!")

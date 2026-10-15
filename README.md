@@ -23,7 +23,7 @@ O projeto permite cadastrar e gerenciar alunos e notas, além de realizar análi
 
 - Python
 - Git / GitHub
-- JSON (persistência em desenvolvimento)
+- Persistência em JSON
 
 ---
 

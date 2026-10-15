@@ -40,9 +40,14 @@ def cadastrar_nome(alunos, novo_aluno):
         pause()
 
 def cadastrar_idade(novo_aluno):
-    idade = ler_int("\nDigite a idade do aluno: ")
-    if idade > 0:
-        novo_aluno["idade"] = idade
+    while True:
+        idade = ler_int("\nDigite a idade do aluno: ")
+        if idade > 0:
+            novo_aluno["idade"] = idade
+            break
+        else:
+            print("\nDigite uma idade válida (maior que 0).")
+            pause()
 
 def cadastrar_notas(novo_aluno):
     while True:
