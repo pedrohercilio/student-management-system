@@ -10,6 +10,7 @@ pip install -r requirements.txt
 
 streamlit run app.py(nome do arquivo) -> roda o site pelo streamlit
 ctrl c -> para de rodar o site do streamlit
+python -m streamlit run app.py -> caso tenha sido instalado no python global e não em venv, esse comando força streamlit a rodar sem ter que modificar o path do windows
 
 
 
