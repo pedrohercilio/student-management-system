@@ -198,6 +198,18 @@ def editar_nome(alunos, nome_selecionado):
             pause()
     print("Nome alterado com êxito!")
 
+def editar_idade(alunos, nome_selecionado):
+    while True:
+        nova_idade = ler_int(f"\nQual a nova idade de {nome_selecionado}? ")
+
+        if nova_idade > 0:
+            alunos[nome_selecionado]["idade"] = nova_idade
+            print("\nIdade alterada com êxito!")
+            return
+
+        print("\nDigite uma idade válida (maior que 0).")
+        pause()
+
 def editar_quantidadeNotas(quantidade_notas, notas, nome_selecionado):
     while True:
         nova_quantidade = ler_int(f"\nQual a nova quantidade de notas que {nome_selecionado} terá? ")

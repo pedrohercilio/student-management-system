@@ -6,5 +6,75 @@
         "notas": [
             10.0
         ]
+    },
+    "2": {
+        "matricula": "02",
+        "nome": "Joao Franco",
+        "idade": 18,
+        "notas": [
+            10.0,
+            9.0
+        ]
+    },
+    "3": {
+        "matricula": "03",
+        "nome": "Mateus Moro",
+        "idade": 18,
+        "notas": [
+            8.0,
+            7.0
+        ]
+    },
+    "4": {
+        "matricula": "04",
+        "nome": "Mateus Castilhos",
+        "idade": 18,
+        "notas": [
+            9.0,
+            4.0,
+            10.0
+        ]
+    },
+    "5": {
+        "matricula": "05",
+        "nome": "Joao Vitor",
+        "idade": 20,
+        "notas": [
+            8.0
+        ]
+    },
+    "7": {
+        "matricula": "07",
+        "nome": "Lívia Da Conceição",
+        "idade": 19,
+        "notas": [
+            9.0
+        ]
+    },
+    "8": {
+        "matricula": "08",
+        "nome": "Frederico Rivero",
+        "idade": 1,
+        "notas": [
+            7.0
+        ]
+    },
+    "9": {
+        "matricula": "09",
+        "nome": "Bernardo Sager",
+        "idade": 19,
+        "notas": [
+            10.0,
+            7.8
+        ]
+    },
+    "6": {
+        "matricula": "06",
+        "nome": "Ana Clara Da Silveira",
+        "idade": 29,
+        "notas": [
+            6.7,
+            8.2
+        ]
     }
 }
