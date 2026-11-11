@@ -1,5 +1,6 @@
 comandos do terminal:
 
+	=== PYTHON ===
 python3 -m venv .venv -> salva o ambiente em .venv
 
 .venv\Scripts\Activate -> ativa o .venv (Windows)
@@ -12,7 +13,12 @@ streamlit run app.py(nome do arquivo) -> roda o site pelo streamlit
 ctrl c -> para de rodar o site do streamlit
 
 
+	=== C++ ===
+Como compilar: c++ *.cpp -o main
+Como executar: ./main.exe
 
+
+	=== GIT ===
 Configuration and Initialization
 
 git config --global user.name "Name"
