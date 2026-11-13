@@ -5,6 +5,7 @@ from util import (
     ler_float,
     ler_int
 )
+import json
 
 def verificacao_nota(nota):
     if 0 <= nota <= 10:
@@ -32,7 +33,8 @@ def media_turma_medias(alunos):
     if not alunos:
         return 0
     lista_notas = []
-    for notas in alunos.values():
+    for aluno in alunos.values():
+        notas = aluno["notas"]
         media = calcular_media(notas)
         lista_notas.append(media)
     return sum(lista_notas)/len(lista_notas)
@@ -40,7 +42,8 @@ def media_turma_medias(alunos):
 def media_turma_notas(alunos):
     soma_notas = 0
     len_notas = 0
-    for notas in alunos.values():
+    for aluno in alunos.values():
+        notas = aluno["notas"]
         soma_notas = soma_notas + sum(notas)
         len_notas = len_notas + len(notas)
 
@@ -53,7 +56,8 @@ def aluno_melhor(alunos):
     maior_nota = float('-inf')
     # Garante que a primeira média encontrada seja armazenada.
 
-    for aluno, notas in alunos.items():
+    for aluno, registro in alunos.items():
+        notas = registro["notas"]
         media = calcular_media(notas)
 
         if media > maior_nota:
@@ -70,7 +74,8 @@ def aluno_pior(alunos):
     menor_nota = float('inf')
     # Garante que a primeira média encontrada seja armazenada.
 
-    for aluno, notas in alunos.items():
+    for aluno, registro in alunos.items():
+        notas = registro["notas"]
         media = calcular_media(notas)
 
         if media < menor_nota:
@@ -86,7 +91,8 @@ def qtde_aprovacao(alunos):
     aprovados = 0
     em_recuperacao = 0
     reprovados = 0
-    for notas in alunos.values():
+    for aluno in alunos.values():
+        notas = aluno["notas"]
         aprovacao, media = situacao_aluno(notas)
         if aprovacao == "Aprovado":
             aprovados += 1
@@ -102,7 +108,8 @@ def qtde_de_notas(alunos):
     n4_6 = 0
     n2_4 = 0
     n0_2 = 0
-    for notas in alunos.values():
+    for aluno in alunos.values():
+        notas = aluno["notas"]
         for nota in notas:
             if 8 <= nota <= 10:
                 n8_10 += 1
@@ -124,7 +131,8 @@ def diferenca_notas(notas):
 def aluno_consistente(alunos):
     consistencia = float("inf")
     aluno_ci = []
-    for aluno, notas in alunos.items():
+    for aluno, registro in alunos.items():
+        notas = registro["notas"]
         diferenca = diferenca_notas(notas)
 
         if diferenca < consistencia:
@@ -139,7 +147,8 @@ def aluno_consistente(alunos):
 def aluno_irregular(alunos):
     consistencia = float("-inf")
     aluno_ci = []
-    for aluno, notas in alunos.items():
+    for aluno, registro in alunos.items():
+        notas = registro["notas"]
         diferenca = diferenca_notas(notas)
 
         if diferenca > consistencia:
@@ -153,47 +162,30 @@ def aluno_irregular(alunos):
 
 def ranking_alunos(alunos):
     # Ordena os alunos pela média em ordem decrescente.
-    return sorted(alunos.items(), reverse=True, key=lambda item: calcular_media(item[1]))
-
-def cadastro_aluno(alunos):
-    while True:
-        nome = input("\nDigite o nome do aluno: ").strip().title()
-
-        if not nome:
-            print("Digite algum nome.")
-            pause()
-            continue
-
-        if nome in alunos:
-            print("Aluno já cadastrado.")
-        else:
-            break
-
-    while True:
-        qtde_notas = ler_int("\nDigite quantas notas o aluno possui: ")
-        if qtde_notas > 0:
-                break
-        else:
-            print("\nDigite um valor maior que 0.")
-            pause()
-
-    notas_validas = 0
-    notas = []
-
-    while notas_validas < qtde_notas:
-        nota = ler_float("\nDigite uma nota do usuário: ")
-        if verificacao_nota(nota):
-            notas.append(nota)
-            notas_validas += 1
-        else:
-            print("\nPor favor, digite um valor válido! (Nota entre 0 e 10)")
-            pause()
-
-    alunos[nome] = notas
+    return sorted(
+        alunos.items(),
+        reverse=True,
+        key=lambda item: calcular_media(item[1]["notas"])
+    )
 
 def editar_nome(alunos, nome_selecionado):
     while True:
-        novo_nome = input(f"\nQual o nome que você quer colocar no lugar de {nome_selecionado}? ").strip().title()
+        while True:
+            novo_1nome = input(f"\nQual o nome que você quer colocar no lugar de {nome_selecionado}? ").strip().title()
+            if novo_1nome == "":
+                print("\nNome digitado em branco, digite-o novamente.")
+                pause()
+                continue
+            else: break
+
+        while True:
+            novo_sobrenome = input(f"\nE qual sobrenome? ").strip().title()
+            if novo_sobrenome == "":
+                print("\nSobrenome digitado em branco, digite-o novamente.")
+                pause()
+                continue
+            else: break
+        novo_nome = novo_1nome + " " + novo_sobrenome
         if novo_nome and novo_nome not in alunos:
            alunos[novo_nome] = alunos.pop(nome_selecionado)
            break
@@ -205,6 +197,18 @@ def editar_nome(alunos, nome_selecionado):
             print("\nO nome escolhido já está entre os atuais alunos ou está vazio, por favor, digite outro nome.")
             pause()
     print("Nome alterado com êxito!")
+
+def editar_idade(alunos, nome_selecionado):
+    while True:
+        nova_idade = ler_int(f"\nQual a nova idade de {nome_selecionado}? ")
+
+        if nova_idade > 0:
+            alunos[nome_selecionado]["idade"] = nova_idade
+            print("\nIdade alterada com êxito!")
+            return
+
+        print("\nDigite uma idade válida (maior que 0).")
+        pause()
 
 def editar_quantidadeNotas(quantidade_notas, notas, nome_selecionado):
     while True:
@@ -366,7 +370,7 @@ def corrigir_notas(itens_para_corrigir, notas, quantidade_notas, indices_validos
                     if novo_valor.startswith("Nota"):
                         try: 
                             novo_num = int(novo_valor.split()[1])
-                        except: 
+                        except (ValueError, IndexError): 
                             pass
                     if novo_num is None:
                         for i in range(len(notas)):
@@ -435,3 +439,134 @@ def editar_nota(quantidade_notas, notas):
         else:
             print("\nPor favor, selecione uma nota válida.")
             pause()
+
+def escrever_json():
+    with open("dados.json", "w", encoding="utf-8") as arquivo:
+        json.dump({}, arquivo, ensure_ascii=False, indent=4)
+
+def _perguntar_tentar_novamente():
+    while True:
+        escolha = input(
+            "\nDeseja tentar carregar novamente depois de corrigir o arquivo? (Y/N) "
+        ).strip().upper()
+        if escolha == "Y":
+            return True
+        if escolha == "N":
+            print("\nEncerrando o programa...\n")
+            return False
+        print("\nOpção inválida. Digite Y para tentar novamente ou N para encerrar.")
+
+
+def _validar_registros(registros):
+    if not isinstance(registros, dict):
+        raise ValueError("o conteúdo principal deve ser um objeto JSON.")
+
+    alunos = {}
+    campos_obrigatorios = ("matricula", "nome", "idade", "notas")
+
+    for referencia, aluno in registros.items():
+        if not isinstance(referencia, str) or not referencia.isdigit():
+            raise ValueError(f"a referência do aluno {referencia!r} deve ser numérica.")
+        if not isinstance(aluno, dict):
+            raise ValueError(f"o registro do aluno {referencia} deve ser um objeto.")
+        if any(campo not in aluno for campo in campos_obrigatorios):
+            raise ValueError(
+                f"o registro do aluno {referencia} não contém todos os campos obrigatórios."
+            )
+
+        if not isinstance(aluno["matricula"], str) or not aluno["matricula"].strip():
+            raise ValueError(f"a matrícula do aluno {referencia} deve ser um texto não vazio.")
+
+        if not aluno["matricula"].isdigit():
+            raise ValueError(f"a matrícula do aluno {referencia} deve conter apenas números.")
+
+        if any(registro["matricula"] == aluno["matricula"] for registro in alunos.values()):
+            raise ValueError(f"a matrícula {aluno['matricula']} já está cadastrada.")
+        
+        if not isinstance(aluno["nome"], str) or not aluno["nome"].strip():
+            raise ValueError(f"o nome do aluno {referencia} deve ser um texto não vazio.")
+        if (
+            not isinstance(aluno["idade"], int)
+            or isinstance(aluno["idade"], bool)
+            or aluno["idade"] <= 0
+        ):
+            raise ValueError(f"a idade do aluno {referencia} deve ser um inteiro positivo.")
+        if not isinstance(aluno["notas"], list):
+            raise ValueError(f"as notas do aluno {referencia} devem estar em uma lista.")
+        if not aluno["notas"]:
+            raise ValueError(f"o aluno {referencia} deve possuir pelo menos uma nota.")
+        if any(
+            not isinstance(nota, (int, float))
+            or isinstance(nota, bool)
+            or not 0 <= nota <= 10
+            for nota in aluno["notas"]
+        ):
+            raise ValueError(
+                f"as notas do aluno {referencia} devem ser números entre 0 e 10."
+            )
+        if aluno["nome"] in alunos:
+            raise ValueError(f"há mais de um aluno com o nome {aluno['nome']}.")
+
+        registro = aluno.copy()
+        registro["_referencia"] = referencia
+        alunos[registro["nome"]] = registro
+
+    return alunos
+
+
+def ler_json():
+    while True:
+        try:
+            try:
+                with open("dados.json", "r", encoding="utf-8") as arquivo:
+                    conteudo = arquivo.read()
+            except FileNotFoundError:
+                escrever_json()
+                return {}
+            except (OSError, UnicodeDecodeError):
+                print(
+                    "\nNão foi possível ler o arquivo dados.json. "
+                    "Verifique se ele existe e se está acessível."
+                )
+                if _perguntar_tentar_novamente():
+                    continue
+                return None
+
+            if not conteudo.strip():
+                escrever_json()
+                return {}
+
+            registros = json.loads(conteudo)
+            return _validar_registros(registros)
+
+        except json.JSONDecodeError:
+            print("\nO arquivo dados.json contém um JSON inválido.")
+        except ValueError as erro:
+            print(f"\nO arquivo dados.json possui uma estrutura inválida: {erro}")
+        except OSError:
+            print(
+                "\nO arquivo dados.json foi lido, mas não foi possível "
+                "inicializá-lo ou acessá-lo."
+            )
+
+        if _perguntar_tentar_novamente():
+            continue
+        return None
+
+
+def salvar_json(alunos):
+    registros = {}
+    for nome, aluno in alunos.items():
+        referencia = str(aluno["_referencia"])
+        registro = {
+            campo: valor
+            for campo, valor in aluno.items()
+            if campo != "_referencia"
+        }
+        registro["nome"] = nome
+        registros[referencia] = registro
+
+    with open("dados.json", "w", encoding="utf-8") as arquivo:
+        json.dump(registros, arquivo, ensure_ascii=False, indent=4)
+
+    print("\nDados salvos com sucesso!")

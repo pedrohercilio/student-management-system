@@ -18,7 +18,8 @@ def escolher_aluno(alunos):
 
     print("\nAlunos cadastrados")
     for ordem, aluno in enumerate(alunos_ordenados, start= 1):
-        print(f"{ordem} - {aluno}")
+        idade = alunos[aluno]["idade"]
+        print(f"{ordem} - {aluno} ({idade} anos)")
 
 
     aluno_selecionado = input("\nEscolha o aluno: ")
