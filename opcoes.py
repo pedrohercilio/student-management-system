@@ -10,6 +10,7 @@ import logica as l
 def opcoes(alunos):
     if alunos:
         while True:
+            lista_vazia = False
             m.menuOpcoes()
 
             escolha = recebe_escolha()
@@ -27,7 +28,9 @@ def opcoes(alunos):
                 opcao_ranking(alunos)
 
             elif escolha == 4:
-                opcao_gerenciarAlunos(alunos)
+                lista_vazia = opcao_gerenciarAlunos(alunos, lista_vazia)
+                if lista_vazia == True:
+                    break
 
             elif escolha == 0:
                 break
@@ -237,7 +240,7 @@ def opcao_top3(alunos):
             print(f"{ordem}º - {aluno} (Matrícula: {registro['matricula']}), Média: {media:.2f}")
     pause()
 
-def opcao_gerenciarAlunos(alunos):
+def opcao_gerenciarAlunos(alunos, lista_vazia):
     while True:
         m.menuGerenciarAlunos()
 
@@ -253,7 +256,8 @@ def opcao_gerenciarAlunos(alunos):
             opcao_editarAluno(alunos)
 
         elif escolha == 3:
-            opcao_excluirAluno(alunos)
+            lista_vazia = opcao_excluirAluno(alunos, lista_vazia)
+            return lista_vazia
 
         elif escolha == 0:
             break
@@ -266,16 +270,19 @@ def opcao_infoAlunos(alunos):
     print("\n--- Informações dos alunos ---")
     alunos_ordenados = sorted(alunos)
 
-    for aluno in alunos_ordenados:
+    for ordem, aluno in enumerate(alunos_ordenados, start=1):
         registro = alunos[aluno]
         notas = registro["notas"]
         qtde_notas = len(notas)
         media = l.calcular_media(notas)
 
         print(
-            f"\nNome: {aluno} -- Matrícula: {registro['matricula']} "
-            f"-- Idade: {registro['idade']} -- Qtde de notas: {qtde_notas} "
-            f"-- Notas: {notas} -- Média: {media:.2f}"
+            f"\n{ordem} - Nome: {aluno}"
+            f"\nMatrícula: {registro['matricula']} "
+            f"\nIdade: {registro['idade']}"
+            f"\nQuantidade de notas: {qtde_notas}"
+            f"\nNotas: {notas}"
+            f"\nMédia: {media:.2f}"
         )
 
     pause()
@@ -348,7 +355,7 @@ def opcao_editarAluno(alunos):
             print("\nPor favor, selecione algum aluno válido!")
             pause()
 
-def opcao_excluirAluno(alunos):
+def opcao_excluirAluno(alunos, lista_vazia):
     while True:
         print("\n=== Exclusão de Alunos ===")
         aluno_escolhido = escolher_aluno(alunos)
@@ -362,6 +369,9 @@ def opcao_excluirAluno(alunos):
                 if escolha == 'Y':
                     alunos.pop(aluno_escolhido)
                     print(f"\nAluno excluído com sucesso!")
+                    if not(alunos.keys()):
+                        lista_vazia = True
+                        return lista_vazia
                     break
                 elif escolha == 'N':
                     break

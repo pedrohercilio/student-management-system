@@ -1,5 +1,6 @@
 comandos do terminal:
 
+	=== PYTHON ===
 python3 -m venv .venv -> salva o ambiente em .venv
 
 .venv\Scripts\Activate -> ativa o .venv (Windows)
@@ -13,7 +14,12 @@ ctrl c -> para de rodar o site do streamlit
 python -m streamlit run app.py -> caso tenha sido instalado no python global e não em venv, esse comando força streamlit a rodar sem ter que modificar o path do windows
 
 
+	=== C++ ===
+Como compilar: c++ *.cpp -o main
+Como executar: ./main.exe
 
+
+	=== GIT ===
 Configuration and Initialization
 
 git config --global user.name "Name"

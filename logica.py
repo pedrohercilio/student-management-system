@@ -370,7 +370,7 @@ def corrigir_notas(itens_para_corrigir, notas, quantidade_notas, indices_validos
                     if novo_valor.startswith("Nota"):
                         try: 
                             novo_num = int(novo_valor.split()[1])
-                        except ValueError: 
+                        except (ValueError, IndexError): 
                             pass
                     if novo_num is None:
                         for i in range(len(notas)):
@@ -474,8 +474,15 @@ def _validar_registros(registros):
                 f"o registro do aluno {referencia} não contém todos os campos obrigatórios."
             )
 
-        if not isinstance(aluno["matricula"], str):
-            raise ValueError(f"a matrícula do aluno {referencia} deve ser texto.")
+        if not isinstance(aluno["matricula"], str) or not aluno["matricula"].strip():
+            raise ValueError(f"a matrícula do aluno {referencia} deve ser um texto não vazio.")
+
+        if not aluno["matricula"].isdigit():
+            raise ValueError(f"a matrícula do aluno {referencia} deve conter apenas números.")
+
+        if any(registro["matricula"] == aluno["matricula"] for registro in alunos.values()):
+            raise ValueError(f"a matrícula {aluno['matricula']} já está cadastrada.")
+        
         if not isinstance(aluno["nome"], str) or not aluno["nome"].strip():
             raise ValueError(f"o nome do aluno {referencia} deve ser um texto não vazio.")
         if (
